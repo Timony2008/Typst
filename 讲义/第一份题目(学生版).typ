@@ -13,7 +13,7 @@
     let h-counter = counter(heading).get()
     let prob-num = prob-counter.get().at(0)
     
-    // 动态构建题号描述字符串
+    // 动态构建题号描述字符串 
     let info = ""
     if h-counter.len() == 0 {
       info = [#prob-num]
@@ -142,7 +142,7 @@ $ f((x + y) / 2) + f((2 x y) / (x + y)) = f(x) + f(y), quad forall x, y > 0. $
 ] //4star
 
 #problem()[
-  给定正整数 $k > 2$。我们有一个图 $G$，$G$中每个点的度数至少是 $k$。证明：这个图中存在一个圈 $C$ 满足这些人当中至少有 $k^2/10 + |C|$ 对朋友关系
+  给定正整数 $k > 2$。我们有一个图 $G$，$G$中每个点的度数至少是 $k$。证明：这个图中存在一个圈 $C$ 满足这些人当中至少有 $k^2/10 + |C|$ 对朋友关系。
 ] //4star
 
 #problem()[
