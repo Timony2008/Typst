@@ -1,0 +1,17 @@
+# 忽略编译输出的 PDF 文件
+*.pdf
+
+# 忽略 Typst 可能产生的缓存目录（如果有）
+.typst-cache/
+
+# 忽略 VS Code 编辑器配置（可选，如果不希望分享）
+.vscode/
+
+# 忽略操作系统生成的垃圾文件
+Thumbs.db
+.DS_Store
+
+# 忽略其他可能出现的临时文件
+*.log
+*.aux
+*.tmp
