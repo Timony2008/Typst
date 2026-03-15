@@ -1,0 +1,136 @@
+// 1. 定义问题计数器
+#let prob-counter = counter("problem")
+
+// 2. 自动重置逻辑：在新章节 (level 1) 或新小节 (level 2) 处重置题号
+#show heading.where(level: 1): it => { it; prob-counter.update(0) }
+#show heading.where(level: 2): it => { it; prob-counter.update(0) }
+
+// 3. 定义智能 problem 函数
+#let problem(title: "Problem", body) = {
+  prob-counter.step()
+  
+  context {
+    let h-counter = counter(heading).get()
+    let prob-num = prob-counter.get().at(0)
+    
+    // 动态构建题号描述字符串 
+    let info = ""
+    if h-counter.len() == 0 {
+      info = [#prob-num]
+    } else if h-counter.len() == 1 {
+      // 只有章，没有节
+      let chapter = h-counter.at(0)
+      info = [#{chapter+1}.#prob-num ]
+    } else {
+      // 既有章，又有节
+      let chapter = h-counter.at(0)
+      let section = h-counter.at(1)
+      info = [#{chapter+1} . #section #prob-num]
+    }
+    
+    [
+      #strong()[#title ] 
+      #info
+
+      #body
+      #pagebreak()
+    ]
+  }
+}
+
+
+#set page(
+  margin: (top: 1.5cm, bottom: 1.5cm, left: 1.5cm, right: 1.5cm), // 顶部边距设为0，方便图片贴边
+)
+
+
+#text(size:30pt)[Problem Sheet 1]
+\
+\
+
+= Part 1 之前的问题
+\
+
+#problem[
+给定正整数 $n$，平面上的 $n$ 条不同直线构成集合 $S$。令
+$T = { {l_1,l_2,l_3} subset.eq S : l_1,l_2,l_3$ 围成一个锐角三角形 $}$，
+求 $|T|$ 的最大值。
+]//算两次   4star
+
+#problem[
+给定正整数 $n >= 2$。对 $n$ 个集合 $A_i$（$i=1,2,dots,n$）定义如下操作：开始时每个 $A_i = {i}$。每次操作可以选择 $1 <= i < j <= n$，把 $A_i, A_j$ 均换成 $A_i ∪ A_j$。求最小的正整数 $k$，使得在任何 $n - 1$ 次操作后，一定存在 $i in {1,2,dots,n}$，满足至多存在 $k$ 个 $j in {1,2,dots,n}$ 使 $i in A_j$。
+]//归纳，不太难3.5star
+
+#problem[
+设 $n$ 为正整数。现有 $n(n+1)$ 个房间排列成 $(n+1) times n$ 的网格状，每两个相邻房间之间有一扇门。求选择若干扇门并上锁的方式数，使得存在两个房间 $S$ 和 $G$ 满足以下性质：
+
+#set enum(numbering: "(i)")
++ $S$ 在第一行，$G$ 在第 $(n+1)$ 行；
++ 仅通过未上锁的门可以从 $S$ 到达 $G$。
+]
+
+= Part 2 Graph theory
+
+#problem[设图 $G$ 的每个顶点处有一个电灯和一个开关。一开始，所有灯都点亮。触动一个开关会改变这个顶点处的灯以及相邻顶点处的灯的状态。证明：可以触动一些开关，使得所有的灯都熄灭。]
+
+#problem[设 $G$ 是连通图，边数为偶数。证明：可以把 $G$ 的边分拆成长度为 $2$ 的路径。]
+
+#problem[设 $G$ 是至少有 $5$ 个顶点的连通图，任何 $4$ 个顶点之间至少有 $2$ 条边。证明：$G$ 有哈密顿路径。]
+
+#problem[在 $3$-正则连通图中固定一条边，证明：包含该边的哈密顿圈有偶数个。]
+
+#problem[设 $T$ 是有 $t$ 个顶点的树。证明：每个平均度数为 $2t$ 的图都包含 $T$ 作为子图（即包含一个与 $T$ 同构的子图）。]
+
+#problem[设 $epsilon > 0$ 为实数。证明：除有限多 $n$，任何 $n$ 个顶点、至少有 $(1+epsilon)n$ 条边的图都有两个长度相同的圈。]
+
+#problem[在一个图中，如果一条轨迹至少通过每个顶点一次，就将称其为伪哈密顿的。证明：在 $n >= 3$ 个顶点上的连通图中，存在长度最多为 $2n-4$ 的伪哈密顿轨迹。你能用 $G$ 中最长路径的长度（记为 $k$）改进这个界限吗？]
+
+#problem[给定一个图 $G$ 和正整数 $n$，证明：可以删除 $G$ 的所有边的至多 $1/n$，使得剩下的图不包含 $n+1$ 个顶点的完全图。]
+
+\
+#problem[在图 $G$ 中，任意两个奇圈都有一个公共顶点。证明：$chi(G) <= 5$。]
+
+#problem[设连通图 $G$ 的任何一个奇圈被去掉后，图不再连通。证明：$chi(G) <= 4$。]
+
+#problem[图 $G$ 的每个奇圈都是一个三角形。证明：$chi(G) <= 4$。]
+
+#problem[设 $chi(G) = k$，证明：$G$ 至少有 $2^(k-1)$ 个奇圈。]
+
+#problem[证明：对于任何 $n >= 3$，存在 $n$ 个顶点的平面图，其边数为 $3n-6$。]
+
+#problem[(Kempe, Heawood, 五色定理) 设 $G$ 是平面图，证明：$chi(G) <= 5$。]
+
+#problem[证明：任何 $k$-正则二部图至少有 $k$ 个完美匹配。]
+
+#problem[(J. Petersen, 1891) 设 $G$ 是 $2k$-正则图，则 $G$ 有 $2$-正则生成子图。]
+
+#problem[设 $n$ 是正整数，拉丁矩形是一个 $k times n$ 的方格表，$k <= n$，方格填入了数字 $1, 2, dots, n$，并且任何一列或一行上没有数字重复出现。证明：任何拉丁矩形都可以扩展为拉丁方（即 $n times n$ 的拉丁矩形）。]
+
+#problem[有 $n >= 4$ 个顶点，$m > frac(n+n sqrt(4n-3), 4)$ 条边的图的 $4$-圈个数不少于 $frac((2m^2-n^2)(4m^2-3n^2+n), 4n^3(n-1))$。]
+
+#problem[图 $G$ 有 $n$ 个顶点和至少 $n^2/4 + 1$ 条边。证明：存在两个三角形，有一条公共边。]
+
+#problem[设 $G$ 是 $n$ 个顶点的无三角形图，每个顶点的度数严格大于 $2n/5$。证明：$G$ 是二部图。]
+
+#problem[(Kővári, Sós, Turán, 1954) 设图 $G(V, E)$ 有 $n$ 个顶点，不包含 $K_(k,k)$ 子图，证明
+$ |E| <= ((k-1)^(1/k) (n-k+1) n^(1-1/k) + (k-1)n) / 2 $]
+
+#problem[(改编自图伊玛达奥林匹克 2016, D. Conlon) 设图 $G$ 有 $m$ 条边，$r > 0$。证明：$G$ 的 $K_(r,r)$ 子图的个数不超过 $m^r / r!$。]
+
+#problem[设图 $G(V, E)$ 有 $n$ 个顶点，围长至少为 $5$（没有长度为 $3$ 或 $4$ 的圈）。证明
+$ |E| <= (n sqrt(n-1)) / 2 $]
+
+\
+#problem[证明：在竞赛图中存在顶点 $v$，使得从 $v$ 到任何其他顶点存在长度不超过 $2$ 的路径。]
+
+#problem[设 $G$ 为有向图。证明：存在 $G$ 的顶点子集 $A$，满足：$A$ 中的任何两个顶点不相邻；任何不在 $A$ 中的顶点都可以从 $A$ 中的某个顶点通过长度为 $1$ 或 $2$ 的有向路径到达。]
+
+#problem[设 $G$ 是有偶数条边的连通（无向）图。证明：可以将所有边定向，使得每个顶点的出度为偶数。]
+
+#problem[设 $G$ 是 $2$-正则有向图（即每个顶点都有 $d^+(v) = d^-(v) = 2$）。证明：$G$ 的 $1$-正则生成子图的个数是 $2$ 的正整数次幂。]
+
+#problem[(罗马尼亚 TST 2012) 证明：有限平面简单图的边可以定向，使得每个顶点的出度最多为 $3$。]
+
+#problem[(L. Rédei, 1934) 设 $G$ 是竞赛图，证明：$G$ 包含奇数个（有向）哈密顿路径。]
+
+#problem[一个竞赛图 $G$ 的每条边都是红色或蓝色的。证明：图 $G$ 中存在一个顶点 $v$，使得对于每个其他顶点 $w$，存在一条从 $v$ 到 $w$ 的有向单色路径（所有路径不必是相同的颜色）。]
